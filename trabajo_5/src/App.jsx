@@ -60,7 +60,7 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>Manejador de Tareas de Proyectos de Software</h1>
+        <h1>Manejador de Tareas</h1>
       </header>
       
       <main className="app-main">

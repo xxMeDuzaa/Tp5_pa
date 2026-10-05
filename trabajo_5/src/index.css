@@ -32,15 +32,9 @@ body {
 }
 
 .app-main {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
-}
-
-@media (min-width: 900px) {
-  .app-main {
-    grid-template-columns: 350px 1fr;
-  }
 }
 
 /* FORM STYLES */
@@ -49,7 +43,6 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  align-self: start;
 }
 
 .task-form-container h2 {
@@ -58,8 +51,25 @@ body {
   padding-bottom: 10px;
 }
 
+.task-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+@media (min-width: 768px) {
+  .task-form {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 0;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
 }
 
 .form-group label {
@@ -73,7 +83,7 @@ body {
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   box-sizing: border-box;
@@ -81,9 +91,10 @@ body {
 }
 
 .form-actions {
+  grid-column: 1 / -1;
   display: flex;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 /* BUTTONS */

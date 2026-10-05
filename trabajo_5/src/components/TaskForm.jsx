@@ -90,12 +90,12 @@ const TaskForm = ({ onTaskAdded, editingTask, onTaskUpdated, onCancelEdit }) => 
           <input type="text" name="activity_type" value={formData.activity_type} onChange={handleChange} required />
         </div>
 
-        <div className="form-group">
+        <div className="form-group full-width">
           <label>Resumen *</label>
           <input type="text" name="summary" value={formData.summary} onChange={handleChange} required />
         </div>
 
-        <div className="form-group">
+        <div className="form-group full-width">
           <label>Descripción</label>
           <textarea name="description" value={formData.description} onChange={handleChange} rows="3"></textarea>
         </div>
@@ -128,7 +128,7 @@ const TaskForm = ({ onTaskAdded, editingTask, onTaskUpdated, onCancelEdit }) => 
           <input type="text" name="assignee" value={formData.assignee} onChange={handleChange} />
         </div>
 
-        <div className="form-group">
+        <div className="form-group full-width">
           <label>Precondición</label>
           <input type="text" name="precondition" value={formData.precondition} onChange={handleChange} />
         </div>
