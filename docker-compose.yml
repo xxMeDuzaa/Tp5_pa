@@ -1,0 +1,56 @@
+services:
+  task_db:
+    image: postgres:15-alpine
+    container_name: task_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taskdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - task_db_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - task_net
+
+  task_backend:
+    build:
+      context: ./backend
+    container_name: task_backend
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=taskdb
+      - DB_HOST=task_db
+      - DB_PORT=5432
+    depends_on:
+      - task_db
+    networks:
+      - task_net
+
+  task_react:
+    build:
+      context: ./trabajo_5
+    container_name: task_react
+    ports:
+      - "${REACT_PORT:-5173}:5173"
+    volumes:
+      - ./trabajo_5:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:3000/api
+    depends_on:
+      - task_backend
+    restart: unless-stopped
+    networks:
+      - task_net
+
+networks:
+  task_net:
+    driver: bridge
+
+volumes:
+  task_db_data:
