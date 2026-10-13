@@ -214,3 +214,19 @@ button:disabled {
   padding-top: 10px;
   border-top: 1px dashed var(--border-color);
 }
+
+.form-error {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #fdecea;
+  color: #b3261e;
+  font-size: 0.9rem;
+}
+
+.task-list-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-muted);
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
+import { todayLocal } from './utils/dates';
 import './App.css';
 
 function App() {
@@ -26,11 +27,11 @@ function App() {
   }, []);
 
   const handleTaskAdded = (newTask) => {
-    setTasks([newTask, ...tasks]);
+    setTasks(prev => [newTask, ...prev]);
   };
 
   const handleTaskUpdated = (updatedTask) => {
-    setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
+    setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
     setEditingTask(null);
   };
 
@@ -38,7 +39,9 @@ function App() {
     try {
       const response = await fetch(`${apiUrl}/tasks/${id}`, { method: 'DELETE' });
       if (response.ok) {
-        setTasks(tasks.filter(t => t.id !== id));
+        setTasks(prev => prev.filter(t => t.id !== id));
+        // Si se elimina la tarea que se estaba editando, se cancela la edición
+        setEditingTask(prev => (prev && prev.id === id ? null : prev));
       }
     } catch (error) {
       console.error('Error deleting task:', error);
@@ -47,10 +50,16 @@ function App() {
 
   const handleFinish = async (id) => {
     try {
-      const response = await fetch(`${apiUrl}/tasks/${id}/finish`, { method: 'PUT' });
+      const response = await fetch(`${apiUrl}/tasks/${id}/finish`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        // La fecha de cierre se completa automáticamente con la fecha de hoy
+        body: JSON.stringify({ closed_at: todayLocal() })
+      });
       if (response.ok) {
         const updatedTask = await response.json();
-        setTasks(tasks.map(t => t.id === id ? updatedTask : t));
+        setTasks(prev => prev.map(t => t.id === id ? updatedTask : t));
+        setEditingTask(prev => (prev && prev.id === id ? null : prev));
       }
     } catch (error) {
       console.error('Error finishing task:', error);
